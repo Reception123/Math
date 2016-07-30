@@ -205,7 +205,7 @@ class MathTexvc extends MathRenderer {
 		LoggerFactory::getInstance( 'Math' )->debug( "TeX: $cmd" );
 		LoggerFactory::getInstance( 'Math' )->debug( "Executing '$cmd'." );
 		$retval = null;
-		$contents = wfShellExec( $cmd, $retval );
+		$contents = wfShellExec( $cmd, $retval, array( 'PATH' => '/usr/sbin:/usr/bin:/sbin:/bin' ) );
 		LoggerFactory::getInstance( 'Math' )->debug( "TeX output:\n $contents\n---" );
 
 		if ( strlen( $contents ) == 0 ) {
