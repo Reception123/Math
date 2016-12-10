@@ -109,9 +109,7 @@
 		"MathPath": false,
 		"MathTexvcCheckExecutable": false,
 		"MathValidModes": [
-			"png",
-			"source",
-			"mathml"
+			"png"
 		],
 		"MathEnableWikibaseDataType": true,
 		"Texvc": false,
