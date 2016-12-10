@@ -3,11 +3,13 @@
 	"bitwise": true,
 	"eqeqeq": true,
 	"freeze": true,
-	"latedef": true,
+	"latedef": "nofunc",
+	"futurehostile": true,
 	"noarg": true,
 	"nonew": true,
 	"undef": true,
 	"unused": true,
+
 	"strict": false,
 
 	// Relaxing
@@ -20,6 +22,7 @@
 	"globals": {
 		"mediaWiki": false,
 		"OO": false,
-		"ve": false
+		"ve": false,
+		"mw": false
 	}
 }

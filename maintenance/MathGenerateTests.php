@@ -25,12 +25,13 @@ class MathGenerateTests extends Maintenance
 {
 	const REFERENCE_PAGE = 'mediawikiwiki:Extension:Math/CoverageTest';
 
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 		$this->mDescription = 'Rebuilds the MathCoverage tests';
 		$this->addArg( 'page', "The page used for the testset generation.", false );
-		$this->addOption( 'offset', "If set the first n equations on the page are skipped", false, true, "o" );
+		$this->addOption(
+			'offset', "If set the first n equations on the page are skipped", false, true, "o"
+		);
 		$this->addOption( 'length', "If set the only n equations were processed", false, true, "l" );
 		$this->addOption( 'user', "User with rights to view the page", false, true, "u" );
 
@@ -54,15 +55,14 @@ class MathGenerateTests extends Maintenance
 
 		$wikiText = Sanitizer::removeHTMLcomments( $wikiText );
 		$wikiText = preg_replace( '#<nowiki>(.*)</nowiki>#', '', $wikiText );
-		$math = array();
-		Parser::extractTagsAndParams( array( 'math' ), $wikiText, $math );
+		$math = [];
+		Parser::extractTagsAndParams( [ 'math' ], $wikiText, $math );
 		return $math;
 	}
 
-	public function execute()
-	{
+	public function execute() {
 		global $wgUser;
-		$parserTests = array();
+		$parserTests = [];
 		$page = $this->getArg( 0, self::REFERENCE_PAGE );
 		$offset = $this->getOption( 'offset', 0 );
 		$length = $this->getOption( 'length', PHP_INT_MAX );
@@ -80,12 +80,14 @@ class MathGenerateTests extends Maintenance
 		foreach ( array_slice( $allEquations, $offset, $length, true ) as $input ) {
 			$output = MathRenderer::renderMath( $input[1], $input[2], 'png' );
 			$output = preg_replace( '#src="(.*?)/(([a-f]|\d)*).png"#', 'src="\2.png"', $output );
-			$parserTests[] = array( (string)$input[1], $output );
+			$parserTests[] = [ (string)$input[1], $output ];
 			$i++;
 			echo '.';
 		}
 		echo "Generated $i tests\n";
-		file_put_contents( __DIR__ . '/../tests/ParserTest.json', json_encode( $parserTests, JSON_PRETTY_PRINT ) );
+		file_put_contents(
+			__DIR__ . '/../tests/ParserTest.json', json_encode( $parserTests, JSON_PRETTY_PRINT )
+		);
 	}
 }
 

@@ -5,17 +5,24 @@
 			"Siddhartha Ghai",
 			"आलोक",
 			"संजीव कुमार",
-			"NehalDaveND"
+			"NehalDaveND",
+			"Sfic",
+			"जनक राज भट्ट",
+			"Rajat11"
 		]
 	},
 	"math-desc": "<code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code> टैगों के बीच गणितीय सूत्र रेंडर करें",
-	"math-preference-mwmathinspector-description": "यथादृश्य संपादिका में जाँच हेतु गणितीय सूत्र (फ़ॉर्मुले) जोड़ने और सम्पादित करने की प्रयोगात्मक सुविधा जोड़ें, उसके सामान्य रूप से जारी होने से पहले। प्रयोगात्मक सुविधाओं का उपयोग करते समय कृपया अपने बदलाव सहेजने से पहले सदैव जाँचें।",
-	"math-preference-mwmathinspector-label": "विज़ुअल सम्पादक फ़ॉर्मुला सम्पादन",
+	"math-visualeditor-mwmathcontextitem-quickedit": "शीघ्र संपादित",
+	"math-visualeditor-mwmathdialog-title": "सूत्र",
+	"math-visualeditor-mwmathdialog-card-formula": "सूत्र",
+	"math-visualeditor-mwmathdialog-card-options": "विकल्प",
 	"math-visualeditor-mwmathinspector-display": "प्रदर्शन",
 	"math-visualeditor-mwmathinspector-display-block": "अवरोध",
 	"math-visualeditor-mwmathinspector-display-default": "डिफ़ॉल्ट",
 	"math-visualeditor-mwmathinspector-display-inline": "इनलाइन",
+	"math-visualeditor-mwmathinspector-id": "लिंक आईडी (वैकल्पिक)",
 	"math-visualeditor-mwmathinspector-title": "सूत्र",
+	"math-visualeditor-symbol-group-special": "विशेष",
 	"math_bad_output": "मैथ आउटपुट डाइरेक्टरी या तो बना नहीं सकते या फिर उसमें लिख नहीं सकते",
 	"math_bad_tmpdir": "मैथ अस्थायी डाइरेक्टरी या तो बना नहीं सकते या फिर उसमें लिख नहीं सकते",
 	"math_failure": "पार्स नहीं कर पाये",
@@ -36,5 +43,6 @@
 	"mw_math_mathml": "MathML अगर हो सके तो (प्रायोगिक)",
 	"mw_math_png": "हमेशा PNG बनायें",
 	"mw_math_source": "उसे TeX ही रखें (पाठ ब्राउज़र के लिये)",
-	"prefs-math": "गणित"
+	"prefs-math": "गणित",
+	"mathstatus": "गणित स्थिति"
 }

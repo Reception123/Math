@@ -3,8 +3,12 @@
 /**
  * Test the database access and core functionality of MathRenderer.
  *
+ * @covers MathRenderer
+ *
  * @group Math
  * @group Database //Used by needsDB
+ *
+ * @licence GNU GPL v2+
  */
 class MathDatabaseTest extends MediaWikiTestCase {
 	/**
@@ -16,7 +20,6 @@ class MathDatabaseTest extends MediaWikiTestCase {
 	const SOME_MATHML = "iℏ∂_tΨ=H^Ψ<mrow><\ci>";
 	const SOME_CONSERVATIVENESS = 2;
 	const SOME_OUTPUTHASH = 'C65c884f742c8591808a121a828bc09f8<';
-
 
 	/**
 	 * creates a new database connection and a new math renderer
@@ -67,27 +70,32 @@ class MathDatabaseTest extends MediaWikiTestCase {
 		$renderer2 = new MathTexvc( self::SOME_TEX );
 		$this->assertTrue( $renderer2->readFromDatabase(), 'Reading from database failed' );
 		// comparing the class object does now work due to null values etc.
-		$this->assertEquals( $this->renderer->getTex(), $renderer2->getTex(), "test if tex is the same" );
-		$this->assertEquals( $this->renderer->getMathml(), $renderer2->getMathml(), "Check MathML encoding" );
-		$this->assertEquals( $this->renderer->getHtml(), $renderer2->getHtml(), 'test if HTML is the same' );
+		$this->assertEquals(
+			$this->renderer->getTex(), $renderer2->getTex(), "test if tex is the same"
+		);
+		$this->assertEquals(
+			$this->renderer->getMathml(), $renderer2->getMathml(), "Check MathML encoding"
+		);
+		$this->assertEquals(
+			$this->renderer->getHtml(), $renderer2->getHtml(), 'test if HTML is the same'
+		);
 	}
-
 
 	/**
 	 * Checks the creation of the math table.
 	 * @covers MathHooks::onLoadExtensionSchemaUpdates
 	 */
 	public function testCreateTable() {
-		$this->setMwGlobals( 'wgMathValidModes', array( 'png' ) );
+		$this->setMwGlobals( 'wgMathValidModes', [ 'png' ] );
 		$this->db->dropTable( "math", __METHOD__ );
 		$dbu = DatabaseUpdater::newForDB( $this->db );
-		$dbu->doUpdates( array( "extensions" ) );
+		$dbu->doUpdates( [ "extensions" ] );
 		$this->expectOutputRegex( '/(.*)Creating math table(.*)/' );
 		$this->setValues();
 		$this->renderer->writeToDatabase();
 		$res = $this->db->select( "math", "*" );
 		$row = $res->fetchRow();
-		$this->assertEquals( 10, sizeof( $row ) );
+		$this->assertEquals( 10, count( $row ) );
 	}
 
 	/*
@@ -100,12 +108,12 @@ class MathDatabaseTest extends MediaWikiTestCase {
 		$this->assertTrue( $this->renderer->isChanged() );
 		$this->assertTrue( $this->renderer->writeCache(), "Write new entry" );
 		$res = $this->db->selectField( "math", "math_inputhash",
-			array( "math_inputhash" => $inputHash ) );
+			[ "math_inputhash" => $inputHash ] );
 		$this->assertTrue( $res !== false, "Check database entry" );
 		$this->assertTrue( $this->renderer->readFromDatabase(), "Read entry from database" );
 		$this->assertFalse( $this->renderer->isChanged() );
 		// modify the database entry manually
-		$this->db->delete( "math", array( "math_inputhash" => $inputHash ) );
+		$this->db->delete( "math", [ "math_inputhash" => $inputHash ] );
 		// the renderer should not be aware of the modification and should not recreate the entry
 		$this->assertFalse( $this->renderer->writeCache() );
 		// as a result no entry can be found in the database.

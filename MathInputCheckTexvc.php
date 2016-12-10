@@ -2,7 +2,8 @@
 /**
  * MediaWiki math extension
  *
- * (c) 2002-2015 Tomasz Wegrzanowski, Brion Vibber, Moritz Schubotz, and other MediaWiki contributors
+ * (c) 2002-2015 Tomasz Wegrzanowski, Brion Vibber, Moritz Schubotz,
+ * and other MediaWiki contributors
  * GPLv2 license; info in main package.
  *
  * @author Moritz Schubotz
@@ -49,11 +50,11 @@ class MathInputCheckTexvc extends MathInputCheck {
 	 */
 	public function isValid() {
 		$us = $this;
-		$checkWork = new PoolCounterWorkViaCallback( 'MathTexvc-check', "", array(
+		$checkWork = new PoolCounterWorkViaCallback( 'MathTexvc-check', "", [
 			'doWork' => function() use ( $us ) {
 				return $us->doValidCheck();
 			}
-		) );
+		] );
 		return $checkWork->execute();
 	}
 

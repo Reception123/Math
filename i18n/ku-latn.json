@@ -1,15 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bangin"
+			"Bangin",
+			"George Animal"
 		]
 	},
+	"math-visualeditor-mwmathdialog-card-formula": "Formûl",
+	"math-visualeditor-mwmathdialog-card-options": "Vebijêrk",
+	"math-visualeditor-mwmathinspector-title": "Formûl",
+	"math-visualeditor-symbol-group-modular": "Arîtmetîka modûlar",
+	"math_image_error": "Wêşandana PNG nemeşî",
 	"math_sample": "Kurteristê matêmatîk li vir binivisîne",
 	"math_tip": "Kurteristê matêmatîk (LaTeX)",
-	"prefs-math": "TeX",
-	"mw_math_png": "Her caran wek PNG nîşanbide",
-	"mw_math_source": "Wek TeX bêle (ji browser'ên gotaran ra)",
-	"mw_math_mathml": "MathML eger bibe (ceribandin)",
 	"math_unknown_error": "şaşbûnekî nezanîn",
-	"math_image_error": "Wêşandana PNG nemeşî"
+	"math_unknown_function": "fonksiyona nenas \"$1\"",
+	"mw_math_mathml": "MathML eger bibe (ceribandin)",
+	"mw_math_png": "Wêneyên PNG",
+	"mw_math_source": "Wek TeX bêle (ji browser'ên gotaran ra)",
+	"prefs-math": "TeX"
 }

@@ -1,10 +1,13 @@
 <?php
+
 /**
-* Test the database access and core functionality of MathRenderer.
-*
-* @group Math
-* @group Database (Used by needsDB)
-*/
+ * @covers MathLaTeXML
+ *
+ * @group Math
+ * @group Database (Used by needsDB)
+ *
+ * @licence GNU GPL v2+
+ */
 class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	public $renderer;
 	const SOME_TEX = "a+b";
@@ -19,13 +22,12 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	 * @param $name
 	 * @return ReflectionMethod
 	 */
-	protected static function getMethod($name) {
-		$class = new ReflectionClass('MathLaTeXML');
-		$method = $class->getMethod($name);
-		$method->setAccessible(true);
+	protected static function getMethod( $name ) {
+		$class = new ReflectionClass( 'MathLaTeXML' );
+		$method = $class->getMethod( $name );
+		$method->setAccessible( true );
 		return $method;
 	}
-
 
 	/**
 	 * creates a new database connection and a new math renderer
@@ -43,7 +45,8 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 		// Create a new instance of MathSource
 		$this->renderer = new MathLaTeXML( self::SOME_TEX );
 		self::setupTestDB( $this->db, "mathtest" );
-}
+	}
+
 	/**
 	 * Checks the tex and hash functions
 	 * @covers MathRenderer::getInputHash()
@@ -68,7 +71,7 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	public function testTableName() {
 		$fnGetMathTableName = self::getMethod( 'getMathTableName' );
 		$obj = new MathLaTeXML();
-		$tableName = $fnGetMathTableName->invokeArgs( $obj, array() );
+		$tableName = $fnGetMathTableName->invokeArgs( $obj, [] );
 		$this->assertEquals( $tableName, "mathlatexml", "Wrong latexml table name" );
 	}
 
@@ -77,16 +80,16 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	 * @covers MathHooks::onLoadExtensionSchemaUpdates
 	 */
 	public function testCreateTable() {
-		$this->setMwGlobals( 'wgMathValidModes', array( 'latexml' ) );
+		$this->setMwGlobals( 'wgMathValidModes', [ 'latexml' ] );
 		$this->db->dropTable( "mathlatexml", __METHOD__ );
 		$dbu = DatabaseUpdater::newForDB( $this->db );
-		$dbu->doUpdates( array( "extensions" ) );
+		$dbu->doUpdates( [ "extensions" ] );
 		$this->expectOutputRegex( '/(.*)Creating mathlatexml table(.*)/' );
 		$this->setValues();
 		$this->renderer->writeToDatabase();
 		$res = $this->db->select( "mathlatexml", "*" );
 		$row = $res->fetchRow();
-		$this->assertEquals( 12,  sizeof( $row ) );
+		$this->assertEquals( 12,  count( $row ) );
 	}
 
 	/**
@@ -102,9 +105,11 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 		$renderer2 = $this->renderer = new MathLaTeXML( self::SOME_TEX );
 		$renderer2->readFromDatabase();
 		// comparing the class object does now work due to null values etc.
-		$this->assertEquals( $this->renderer->getTex(), $renderer2->getTex(), "test if tex is the same" );
-		$this->assertEquals( $this->renderer->getMathml(), $renderer2->getMathml(), "Check MathML encoding" );
+		$this->assertEquals(
+			$this->renderer->getTex(), $renderer2->getTex(), "test if tex is the same"
+		);
+		$this->assertEquals(
+			$this->renderer->getMathml(), $renderer2->getMathml(), "Check MathML encoding"
+		);
 	}
-
-
 }

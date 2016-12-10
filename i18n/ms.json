@@ -4,12 +4,11 @@
 			"Anakmalaysia",
 			"Aviator",
 			"CoolCityCat",
-			"Kurniasan"
+			"Kurniasan",
+			"Macofe"
 		]
 	},
 	"math-desc": "Mengolah rumus-rumus matematik antara teg-teg <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code>",
-	"math-preference-mwmathinspector-description": "Tambahkan sokongan percubaan pada VisualEditor untuk mewujudkan dan menyunting rumus matematik untuk diuji sebelum keluaran umum. Sila ingat untuk sentiasa menyemak suntingan anda sebelum menyimpan apabila menggunakan ciri-ciri percubaan.",
-	"math-preference-mwmathinspector-label": "Penyuntingan rumus (formula) VisualEditor",
 	"math-visualeditor-mwmathinspector-display": "Paparan",
 	"math-visualeditor-mwmathinspector-display-block": "Blok",
 	"math-visualeditor-mwmathinspector-display-default": "Asali",
@@ -35,7 +34,7 @@
 	"mw_math_mathjax": "MathJax sebelah klien (perlahan, mempertingkat rendering pada sesetengah pelayar dan alat-alat aksesibiliti)",
 	"mw_math_mathml": "MathML dengan sandaran SVG atau PNG (disyorkan untuk pelayar dan alat-alat aksesibiliti moden)",
 	"mw_math_png": "Imej PNG",
-	"mw_math_source": "Sumber TeX (untuk pelayar teks)",
+	"mw_math_source": "Sumber LaTeX (untuk pelayar teks)",
 	"prefs-math": "Matematik",
 	"mathstatus": "Status Math"
 }

@@ -4,10 +4,13 @@
 			"EugeneZelenko",
 			"Jim-by",
 			"Wizardist",
-			"Red Winged Duck"
+			"Red Winged Duck",
+			"Macofe",
+			"Renessaince"
 		]
 	},
 	"math-desc": "Выводзіць матэматычныя формулы, запісаныя паміж тэгамі <code>&lt;math&gt;</code> і <code>&lt;/math&gt;</code>",
+	"math-visualeditor-mwmathcontextitem-quickedit": "Хуткая праўка",
 	"math_bad_output": "Немагчыма запісаць ці стварыць выходную матэматычную дырэкторыю",
 	"math_bad_tmpdir": "Немагчыма запісаць ці стварыць часовую дырэкторыю для матэматыкі",
 	"math_failure": "Немагчыма разабраць",
@@ -24,7 +27,8 @@
 	"mw_math_mathjax": "MathJax на баку кліента (марудны; паляпшае апрацоўку ў некаторых браўзэрах і інструмэнтах падвышэньня даступнасьці)",
 	"mw_math_mathml": "MathML зь вяртаньнем да SVG ці PNG (рэкамэндуецца для сучасных браўзэраў і інструмэнтаў падвышэньня даступнасьці)",
 	"mw_math_png": "PNG-выявы",
-	"mw_math_source": "TeX-разьметка (для тэкставых браўзэраў)",
+	"mw_math_source": "LaTeX-разьметка (для тэкставых браўзэраў)",
 	"prefs-math": "Матэматычныя формулы",
-	"mathstatus": "Генэрацыя матэматычных формулаў"
+	"mathstatus": "Генэрацыя матэматычных формулаў",
+	"wikibase-listdatatypes-math-head": "Матэматычны выраз"
 }

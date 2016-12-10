@@ -3,12 +3,32 @@
 		"authors": [
 			"An13sa",
 			"Bengoa",
-			"Subi"
+			"Subi",
+			"Macofe"
 		]
 	},
+	"math-visualeditor-mwmathdialog-title": "Formula",
+	"math-visualeditor-mwmathdialog-card-formula": "Formula",
+	"math-visualeditor-mwmathdialog-card-options": "Aukerak",
 	"math-visualeditor-mwmathinspector-display": "Bistaratu",
 	"math-visualeditor-mwmathinspector-display-block": "Blokeatu",
 	"math-visualeditor-mwmathinspector-title": "Formula",
+	"math-visualeditor-symbol-group-accents": "Azentuak eta diakritikoak",
+	"math-visualeditor-symbol-group-arrows": "Geziak",
+	"math-visualeditor-symbol-group-derivatives": "Diferentzialak eta deribatuak",
+	"math-visualeditor-symbol-group-functions": "Zenbakizko funtzio estandarrak",
+	"math-visualeditor-symbol-group-geometry": "Geometrikoak",
+	"math-visualeditor-symbol-group-greek": "Alfabeto grekoa",
+	"math-visualeditor-symbol-group-hebrew": "Hebrear alfabetoa",
+	"math-visualeditor-symbol-group-logic": "Logikoak",
+	"math-visualeditor-symbol-group-matrices": "Matrizeak",
+	"math-visualeditor-symbol-group-operators": "Eragileak",
+	"math-visualeditor-symbol-group-projections": "Proiekzioak",
+	"math-visualeditor-symbol-group-parentheses": "Parentesiak",
+	"math-visualeditor-symbol-group-root": "Erro-ikurrak",
+	"math-visualeditor-symbol-group-special": "Bereziak",
+	"math-visualeditor-symbol-group-subscripts": "Azpiindizeak, goi-indizeak eta integralak",
+	"math-visualeditor-symbol-group-symbols": "Ikurrak eta konstanteak",
 	"math_bad_output": "Ezin da math direktorioa sortu edo bertan idatzi",
 	"math_bad_tmpdir": "Ezin da math direktorio tenporala sortu edo bertan idatzi",
 	"math_failure": "Interpretazio errorea",
@@ -24,6 +44,6 @@
 	"mw_math_latexml": "LaTeXML (esperimentala, MathML erabiltzen du)",
 	"mw_math_mathml": "MathML posible bada (proba fasean)",
 	"mw_math_png": "PNG irudiak",
-	"mw_math_source": "Tex kodea (testu nabigatzaileentzako)",
+	"mw_math_source": "LaTeX kodea (testu nabigatzaileentzako)",
 	"prefs-math": "Formulak"
 }

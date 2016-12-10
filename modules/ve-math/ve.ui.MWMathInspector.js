@@ -27,9 +27,7 @@ OO.inheritClass( ve.ui.MWMathInspector, ve.ui.MWLiveExtensionInspector );
 
 /* Static properties */
 
-ve.ui.MWMathInspector.static.name = 'math';
-
-ve.ui.MWMathInspector.static.icon = 'math';
+ve.ui.MWMathInspector.static.name = 'mathInspector';
 
 ve.ui.MWMathInspector.static.title = OO.ui.deferMsg( 'math-visualeditor-mwmathinspector-title' );
 
@@ -85,7 +83,12 @@ ve.ui.MWMathInspector.prototype.initialize = function () {
 
 	// Initialization
 	this.$content.addClass( 've-ui-mwMathInspector-content' );
-	this.form.$element.append( inputField.$element, displayField.$element, idField.$element );
+	this.form.$element.append(
+		inputField.$element,
+		this.generatedContentsError.$element,
+		displayField.$element,
+		idField.$element
+	);
 };
 
 /**
@@ -124,6 +127,13 @@ ve.ui.MWMathInspector.prototype.updateMwData = function ( mwData ) {
 
 	mwData.attrs.display = display !== 'default' ? display : undefined;
 	mwData.attrs.id = id || undefined;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMathInspector.prototype.formatGeneratedContentsError = function ( $element ) {
+	return $element.text().trim();
 };
 
 /* Registration */

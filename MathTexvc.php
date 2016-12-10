@@ -2,7 +2,8 @@
 /**
  * MediaWiki math extension
  *
- * (c) 2002-2012 Tomasz Wegrzanowski, Brion Vibber, Moritz Schubotz, and other MediaWiki contributors
+ * (c) 2002-2012 Tomasz Wegrzanowski, Brion Vibber, Moritz Schubotz,
+ * and other MediaWiki contributors
  * GPLv2 license; info in main package.
  *
  * Contains the driver function for the texvc program
@@ -29,12 +30,12 @@ class MathTexvc extends MathRenderer {
 	const LIBERAL = 0;
 	const MW_TEXVC_SUCCESS = -1;
 
-     /**
+	/**
 	 * Gets an array that matches the variables of the class to the database columns
 	 * @return array
 	 */
 	public function dbOutArray() {
-		$out = array();
+		$out = [];
 		$dbr = wfGetDB( DB_SLAVE );
 		$outmd5_sql = $dbr->encodeBlob( pack( 'H32', $this->hash ) );
 		if ( $outmd5_sql instanceof Blob ) {
@@ -45,14 +46,14 @@ class MathTexvc extends MathRenderer {
 		$out['math_html'] = $this->html;
 		$out['math_mathml'] = utf8_encode( $this->getMathml() );
 		$out['math_inputhash'] = $this->getInputHash();
-		LoggerFactory::getInstance( 'Math' )->info( 'Store Hashpath of image' .
+		LoggerFactory::getInstance( 'Math' )->debug( 'Store Hashpath of image' .
 			bin2hex( $outmd5_sql ) );
 		return $out;
 	}
 
 	protected function dbInArray() {
-		return array( 'math_inputhash', 'math_outputhash',
-				'math_html_conservativeness', 'math_html', 'math_mathml' );
+		return [ 'math_inputhash', 'math_outputhash',
+				'math_html_conservativeness', 'math_html', 'math_mathml' ];
 	}
 
 	/**
@@ -67,7 +68,7 @@ class MathTexvc extends MathRenderer {
 			$xhash = unpack( 'H32md5',
 				$dbr->decodeBlob( $rpage->math_outputhash ) . "                " );
 			$this->hash = $xhash['md5'];
-			LoggerFactory::getInstance( 'Math' )->info( 'Hashpath of PNG-File:' .
+			LoggerFactory::getInstance( 'Math' )->debug( 'Hashpath of PNG-File:' .
 				bin2hex( $this->hash ) );
 			$this->conservativeness = $rpage->math_html_conservativeness;
 			$this->html = $rpage->math_html;
@@ -137,12 +138,12 @@ class MathTexvc extends MathRenderer {
 	 */
 	public function getMathImageHTML() {
 		$url = $this->getMathImageUrl();
-		$attributes = array(
+		$attributes = [
 			// the former class name was 'tex'
 			// for backwards compatibility we keep that classname
 			'class' => 'mwe-math-fallback-image-inline tex',
 			'alt' => $this->getTex()
-		);
+		];
 		if ( $this->getMathStyle() === 'display' ){
 			// if DisplayStyle is true, the equation will be centered in a new line
 			$attributes[ 'class' ] = 'mwe-math-fallback-image-display tex';
@@ -151,9 +152,9 @@ class MathTexvc extends MathRenderer {
 			$this->getAttributes(
 				'img',
 				$attributes,
-				array(
+				[
 					'src' => $url
-				)
+				]
 			)
 		);
 
@@ -269,7 +270,7 @@ class MathTexvc extends MathRenderer {
 			$this->setHash( $newHash );
 		}
 
-		Hooks::run( 'MathAfterTexvc', array( &$this, &$errmsg ) );
+		Hooks::run( 'MathAfterTexvc', [ &$this, &$errmsg ] );
 
 		if ( $errmsg ) {
 			return $errmsg;
@@ -285,13 +286,13 @@ class MathTexvc extends MathRenderer {
 
 		$backend = $this->getBackend();
 		# Create any containers/directories as needed...
-		if ( !$backend->prepare( array( 'dir' => $hashpath ) )->isOK() ) {
+		if ( !$backend->prepare( [ 'dir' => $hashpath ] )->isOK() ) {
 			return $this->getError( 'math_output_error' );
 		}
 		// Store the file at the final storage path...
 		// Bug 56769: buffer the writes and do them at the end.
 		if ( !isset( $wgHooks['ParserAfterParse']['FlushMathBackend'] ) ) {
-			$backend->mathBufferedWrites = array();
+			$backend->mathBufferedWrites = [];
 			$wgHooks['ParserAfterParse']['FlushMathBackend'] = function () use ( $backend ) {
 				global $wgHooks;
 				unset( $wgHooks['ParserAfterParse']['FlushMathBackend'] );
@@ -299,12 +300,12 @@ class MathTexvc extends MathRenderer {
 				unset( $backend->mathBufferedWrites );
 			};
 		}
-		$backend->mathBufferedWrites[] = array(
+		$backend->mathBufferedWrites[] = [
 			'op'  => 'store',
 			'src' => "$tmpDir/{$this->getHash()}.png",
 			'dst' => "$hashpath/{$this->getHash()}.png",
 			'ref' => $tempFsFile // keep file alive
-		);
+		];
 
 		return self::MW_TEXVC_SUCCESS;
 	}
@@ -321,13 +322,15 @@ class MathTexvc extends MathRenderer {
 		} else {
 			static $backend = null;
 			if ( !$backend ) {
-				$backend = new FSFileBackend( array(
+				$backend = new FSFileBackend( [
 					'name'           => 'math-backend',
 					'wikiId' 	 => wfWikiId(),
-					'lockManager'    => new NullLockManager( array() ),
-					'containerPaths' => array( 'math-render' => $wgMathDirectory ),
-					'fileMode'       => 0777
-				) );
+					'lockManager'    => new NullLockManager( [] ),
+					'containerPaths' => [ 'math-render' => $wgMathDirectory ],
+					'fileMode'       => 0777,
+					'obResetFunc'    => 'wfResetOutputBuffers',
+					'streamMimeFunc' => [ 'StreamFile', 'contentTypeFromPath' ]
+				] );
 			}
 			return $backend;
 		}
@@ -351,7 +354,7 @@ class MathTexvc extends MathRenderer {
 		$updated = parent::writeCache();
 		// If we're replacing an older version of the image, make sure it's current.
 		if ( $updated && $wgUseSquid ) {
-			$urls = array( $this->getMathImageUrl() );
+			$urls = [ $this->getMathImageUrl() ];
 			$u = new SquidUpdate( $urls );
 			$u->doUpdate();
 		}
@@ -374,10 +377,10 @@ class MathTexvc extends MathRenderer {
 			}
 			$filename = $this->getHashPath() . "/{$this->getHash()}.png"; // final storage path
 			$backend = $this->getBackend();
-			if ( $backend->fileExists( array( 'src' => $filename ) ) ) {
-				if ( $backend->getFileSize( array( 'src' => $filename ) ) == 0 ) {
+			if ( $backend->fileExists( [ 'src' => $filename ] ) ) {
+				if ( $backend->getFileSize( [ 'src' => $filename ] ) == 0 ) {
 					// Some horrible error corrupted stuff :(
-					$backend->quickDelete( array( 'src' => $filename ) );
+					$backend->quickDelete( [ 'src' => $filename ] );
 				} else {
 					return true; // cache hit
 				}
@@ -389,15 +392,14 @@ class MathTexvc extends MathRenderer {
 	public function getPng() {
 		global $wgHooks;
 		// Workaround for bugfix for Bug 56769
-		if ( !isset( $wgHooks['ParserAfterParse']['FlushMathBackend'] ) ) {
-			// saves the PNG-file
-			$parser = new Parser();
-			$text = '';
-			$stripState = new StripState( '' );
-			Hooks::run( 'ParserAfterParse', array( &$parser, &$text, &$stripState ) );
+		if ( isset( $wgHooks['ParserAfterParse']['FlushMathBackend'] ) ) {
+			// XXX: save any pending files so the read below works
+			call_user_func( $wgHooks['ParserAfterParse']['FlushMathBackend'] );
 		}
 		$backend = $this->getBackend();
-		return $backend->getFileContents( array( 'src' => $this->getHashPath() . "/" . $this->getHash() . '.png' ) );
+		return $backend->getFileContents(
+			[ 'src' => $this->getHashPath() . "/" . $this->getHash() . '.png' ]
+		);
 	}
 
 	public function isInDatabase() {
@@ -465,4 +467,17 @@ class MathTexvc extends MathRenderer {
 	public function setOutputHash( $hash ) {
 		$this->hash = $hash;
 	}
+
+	/**
+	 * Skip tex check for texvc rendering mode.
+	 * Checking the tex code in texvc mode just adds a dependency to the
+	 * texvccheck binary which does not improve security since the same
+	 * checks are performed by texvc anyhow. Especially given the fact that
+	 * texvccheck was derived from texvc.
+	 * @return bool
+	 */
+	public function checkTeX() {
+		return true;
+	}
+
 }

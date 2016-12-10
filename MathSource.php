@@ -9,7 +9,6 @@
  * @file
  */
 
-
 /**
  * Takes LaTeX fragments and outputs the source directly to the browser
  *
@@ -23,7 +22,7 @@ class MathSource extends MathRenderer {
 	 * @param string $tex
 	 * @param array $params
 	 */
-	function __construct( $tex = '', $params = array() ) {
+	function __construct( $tex = '', $params = [] ) {
 		parent::__construct( $tex, $params );
 		$this->setMode( 'source' );
 	}
@@ -44,19 +43,19 @@ class MathSource extends MathRenderer {
 		return Xml::element( 'span',
 			$this->getAttributes(
 				'span',
-				array(
+				[
 					// the former class name was 'tex'
 					// for backwards compatibility we keep this classname
 					'class' => $class. ' tex',
 					'dir' => 'ltr'
-				)
+				]
 			),
 			'$ ' . str_replace( "\n", " ", $this->getTex() ) . ' $'
 		);
 	}
 
 	protected function getMathTableName() {
-		throw new Exception ( 'in math source mode no database caching should happen');
+		throw new Exception( 'in math source mode no database caching should happen' );
 	}
 
 	/**

@@ -1,6 +1,11 @@
 <?php
+
 /**
+ * @covers MathInputCheck
+ *
  * @group Math
+ *
+ * @licence GNU GPL v2+
  */
 class MathInputCheckTest extends MediaWikiTestCase
 {
@@ -26,7 +31,7 @@ class MathInputCheckTest extends MediaWikiTestCase
 	 */
 	public function testGetValidTex() {
 		$InputCheck = $this->getMockBuilder( 'MathInputCheck' )
-			->setConstructorArgs( array( 'some tex input' ) )
+			->setConstructorArgs( [ 'some tex input' ] )
 			->getMock();
 		$this->assertNull( $InputCheck->getValidTex() );
 	}
