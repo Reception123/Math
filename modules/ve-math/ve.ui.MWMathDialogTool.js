@@ -5,8 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global ve, OO */
-
 /**
  * MediaWiki UserInterface math tool.
  *
@@ -24,7 +22,7 @@ ve.ui.MWMathDialogTool.static.name = 'math';
 ve.ui.MWMathDialogTool.static.group = 'object';
 ve.ui.MWMathDialogTool.static.icon = 'math';
 ve.ui.MWMathDialogTool.static.title = OO.ui.deferMsg(
-	'math-visualeditor-mwmathinspector-title' );
+	'math-visualeditor-mwmathdialog-title' );
 ve.ui.MWMathDialogTool.static.modelClasses = [ ve.dm.MWMathNode ];
 ve.ui.MWMathDialogTool.static.commandName = 'mathDialog';
 ve.ui.toolFactory.register( ve.ui.MWMathDialogTool );
@@ -49,5 +47,5 @@ ve.ui.sequenceRegistry.register(
 
 ve.ui.commandHelpRegistry.register( 'insert', 'mathDialog', {
 	sequences: [ 'wikitextMath' ],
-	label: OO.ui.deferMsg( 'math-visualeditor-mwmathinspector-title' )
+	label: OO.ui.deferMsg( 'math-visualeditor-mwmathdialog-title' )
 } );

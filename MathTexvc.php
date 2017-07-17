@@ -57,7 +57,7 @@ class MathTexvc extends MathRenderer {
 	}
 
 	/**
-	 * @param database_row $rpage
+	 * @param stdClass $rpage
 	 * @return bool
 	 */
 	protected function initializeFromDatabaseRow( $rpage ) {
@@ -144,7 +144,7 @@ class MathTexvc extends MathRenderer {
 			'class' => 'mwe-math-fallback-image-inline tex',
 			'alt' => $this->getTex()
 		];
-		if ( $this->getMathStyle() === 'display' ){
+		if ( $this->getMathStyle() === 'display' ) {
 			// if DisplayStyle is true, the equation will be centered in a new line
 			$attributes[ 'class' ] = 'mwe-math-fallback-image-display tex';
 		}
@@ -157,7 +157,6 @@ class MathTexvc extends MathRenderer {
 				]
 			)
 		);
-
 	}
 
 	/**
@@ -178,7 +177,7 @@ class MathTexvc extends MathRenderer {
 	 */
 	public function callTexvc() {
 		global $wgTexvc, $wgTexvcBackgroundColor, $wgHooks;
-		if ( $wgTexvc === false ){
+		if ( $wgTexvc === false ) {
 			$texvc = __DIR__ . '/math/texvc';
 		} else {
 			$texvc = $wgTexvc;
@@ -206,6 +205,11 @@ class MathTexvc extends MathRenderer {
 		LoggerFactory::getInstance( 'Math' )->debug( "TeX: $cmd" );
 		LoggerFactory::getInstance( 'Math' )->debug( "Executing '$cmd'." );
 		$retval = null;
+		if ( strlen( $cmd ) > SHELL_MAX_ARG_STRLEN ) {
+			LoggerFactory::getInstance( 'Math' )->error(
+				"User input exceeded SHELL_MAX_ARG_STRLEN." );
+			return $this->getError( 'math_unknown_error' );
+		}
 		$contents = wfShellExec( $cmd, $retval, array( 'PATH' => '/usr/sbin:/usr/bin:/sbin:/bin' ) );
 		LoggerFactory::getInstance( 'Math' )->debug( "TeX output:\n $contents\n---" );
 
@@ -265,12 +269,15 @@ class MathTexvc extends MathRenderer {
 		if ( !$errmsg ) {
 			$newHash = substr( $contents, 1, 32 );
 			if ( $this->hash !== $newHash ) {
-				$this->isInDatabase( false ); // DB needs update in writeCache() (bug 60997)
+				// DB needs update in writeCache() (bug 60997)
+				$this->isInDatabase();
 			}
 			$this->setHash( $newHash );
 		}
 
-		Hooks::run( 'MathAfterTexvc', [ &$this, &$errmsg ] );
+		// Avoid PHP 7.1 warning from passing $this by reference
+		$renderer = $this;
+		Hooks::run( 'MathAfterTexvc', [ &$renderer, &$errmsg ] );
 
 		if ( $errmsg ) {
 			return $errmsg;
@@ -324,7 +331,7 @@ class MathTexvc extends MathRenderer {
 			if ( !$backend ) {
 				$backend = new FSFileBackend( [
 					'name'           => 'math-backend',
-					'wikiId' 	 => wfWikiId(),
+					'wikiId' => wfWikiID(),
 					'lockManager'    => new NullLockManager( [] ),
 					'containerPaths' => [ 'math-render' => $wgMathDirectory ],
 					'fileMode'       => 0777,

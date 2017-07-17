@@ -9,7 +9,6 @@
 		]
 	},
 	"math-desc": "Randează formulele matematice cuprinse între etichetele <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code>",
-	"math-visualeditor-mwmathinspector-title": "Formulă",
 	"math_bad_output": "Nu se poate crea sau nu se poate scrie în directorul de ieșire pentru formule matematice",
 	"math_bad_tmpdir": "Nu se poate crea sau nu se poate scrie în directorul temporar pentru formule matematice",
 	"math_failure": "Nu s-a putut interpreta",
@@ -28,7 +27,7 @@
 	"mw_math_latexml": "LaTeXML (experimental; folosește MathML)",
 	"mw_math_mathjax": "MathJax (experimental)",
 	"mw_math_mathml": "MathML dacă este posibil (experimental)",
-	"mw_math_png": "Întodeauna afișează PNG",
+	"mw_math_png": "Imagini PNG",
 	"mw_math_source": "Lasă ca TeX (pentru navigatoarele text)",
 	"prefs-math": "Aspect formule"
 }

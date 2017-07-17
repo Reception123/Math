@@ -1,8 +1,8 @@
 # Compiled source
-*.mli
 *.cmi
 *.cmx
 *.o
+parser.mli
 
 # The binaries
 texvc
