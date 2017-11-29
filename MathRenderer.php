@@ -40,13 +40,13 @@ abstract class MathRenderer {
 	protected $id = '';
 
 	// STATE OF THE CLASS INSTANCE
-	/** @var boolean has variable tex been security-checked */
+	/** @var bool has variable tex been security-checked */
 	protected $texSecure = false;
-	/** @var boolean has the mathematical content changed */
+	/** @var bool has the mathematical content changed */
 	protected $changed = false;
-	/** @var boolean is there a database entry for the mathematical content */
+	/** @var bool is there a database entry for the mathematical content */
 	protected $storedInDatabase = null;
-	/** @var boolean is there a request to purge the existing mathematical content */
+	/** @var bool is there a request to purge the existing mathematical content */
 	protected $purge = false;
 	/** @var string with last occurred error */
 	protected $lastError = '';
@@ -183,7 +183,7 @@ abstract class MathRenderer {
 	/**
 	 * Performs the rendering
 	 *
-	 * @return boolean if rendering was successful.
+	 * @return bool if rendering was successful.
 	 */
 	abstract public function render();
 
@@ -226,7 +226,7 @@ abstract class MathRenderer {
 
 	/**
 	 * Set the input hash (if user input tex is not available)
-	 * @param $md5
+	 * @param string $md5
 	 * @return string hash
 	 */
 	public function setMd5( $md5 ) {
@@ -261,7 +261,7 @@ abstract class MathRenderer {
 	/**
 	 * Reads rendering data from database
 	 *
-	 * @return boolean true if read successfully, false otherwise
+	 * @return bool true if read successfully, false otherwise
 	 */
 	public function readFromDatabase() {
 		$dbr = wfGetDB( DB_SLAVE );
@@ -407,6 +407,7 @@ abstract class MathRenderer {
 
 	/**
 	 * Writes cache. Writes the database entry if values were changed
+	 * @return bool
 	 */
 	public function writeCache() {
 		$logger = LoggerFactory::getInstance( 'Math' );
@@ -487,14 +488,14 @@ abstract class MathRenderer {
 	/**
 	 * Get the attributes of the math tag
 	 *
-	 * @return []
+	 * @return array
 	 */
 	public function getParams() {
 		return $this->params;
 	}
 
 	/**
-	 * @param [] $params
+	 * @param array $params
 	 */
 	public function setParams( $params ) {
 		// $changed is not set to true here, because the attributes do not affect
@@ -508,7 +509,7 @@ abstract class MathRenderer {
 	/**
 	 * Checks if the instance was modified i.e., because math was rendered
 	 *
-	 * @return boolean true if something was changed false otherwise
+	 * @return bool true if something was changed false otherwise
 	 */
 	public function isChanged() {
 		return $this->changed;
@@ -516,30 +517,28 @@ abstract class MathRenderer {
 
 	/**
 	 * Checks if there is an explicit user request to rerender the math-tag.
-	 * @return boolean
+	 * @return bool
 	 */
 	function isPurge() {
 		if ( $this->purge ) {
 			return true;
 		}
-		$request = RequestContext::getMain()->getRequest();
-		// TODO: Figure out if ?action=purge
-		// $action = $request->getText('action'); //always returns ''
-		// until this issue is resolved we use ?mathpurge=true instead
-		$mathpurge = $request->getBool( 'mathpurge', false );
-		if ( $mathpurge ) {
-			LoggerFactory::getInstance( 'Math' )->debug( 'Re-Rendering on user request' );
-			return true;
-		} else {
-			return false;
+		$refererHeader = RequestContext::getMain()->getRequest()->getHeader( 'REFERER' );
+		if ( $refererHeader ) {
+			parse_str( parse_url( $refererHeader, PHP_URL_QUERY ), $refererParam );
+			if ( isset( $refererParam['action'] ) && $refererParam['action'] === 'purge' ) {
+				LoggerFactory::getInstance( 'Math' )->debug( 'Re-Rendering on user request' );
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**
 	 * Sets purge. If set to true the render is forced to rerender and must not
 	 * use a cached version.
 	 * @param bool $purge
-	 * @return boolean
+	 * @return bool
 	 */
 	function setPurge( $purge = true ) {
 		$this->changed = true;
@@ -555,11 +554,11 @@ abstract class MathRenderer {
 	 * @param string $mathStyle ('inlineDisplaystyle'|'display'|'inline')
 	 */
 	public function setMathStyle( $mathStyle = 'display' ) {
-		if ( $this->mathStyle !== $mathStyle ){
+		if ( $this->mathStyle !== $mathStyle ) {
 			$this->changed = true;
 		}
 		$this->mathStyle = $mathStyle;
-		if ( $mathStyle == 'inline' ){
+		if ( $mathStyle == 'inline' ) {
 			$this->inputType = 'inline-tex';
 		} else {
 			$this->inputType = 'tex';
@@ -576,7 +575,7 @@ abstract class MathRenderer {
 
 	/**
 	 * Get if the input tex was marked as secure
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTexSecure() {
 		return $this->texSecure;
@@ -591,7 +590,7 @@ abstract class MathRenderer {
 			// equation was already checked or checking is disabled
 			return true;
 		} else {
-			if ( self::getDisableTexFilter() == 'new' && $this->mode != 'source' ){
+			if ( self::getDisableTexFilter() == 'new' && $this->mode != 'source' ) {
 				if ( $this->readFromDatabase() ) {
 					return true;
 				}
@@ -623,7 +622,7 @@ abstract class MathRenderer {
 	}
 
 	/**
-	 * @param string user defined ID
+	 * @param string $id user defined ID
 	 */
 	public function setID( $id ) {
 		// Changes in the ID affect the container for the math element on the current page
@@ -653,7 +652,7 @@ abstract class MathRenderer {
 	 */
 	public function getSvg( /** @noinspection PhpUnusedParameterInspection */ $render = 'render' ) {
 		// Spaces will prevent the image from being displayed correctly in the browser
-		if ( !$this->svg && $this->rbi ){
+		if ( !$this->svg && $this->rbi ) {
 			$this->svg = $this->rbi->getSvg();
 		}
 		return trim( $this->svg );

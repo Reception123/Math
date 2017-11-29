@@ -13,6 +13,7 @@ class MathWikidataHook {
 
 	/**
 	 * Add Datatype "Math" to the Wikibase Repository
+	 * @param array &$dataTypeDefinitions
 	 */
 	public static function onWikibaseRepoDataTypes( array &$dataTypeDefinitions ) {
 		global $wgMathEnableWikibaseDataType;
@@ -23,7 +24,7 @@ class MathWikidataHook {
 
 		$dataTypeDefinitions['PT:math'] = [
 			'value-type'                 => 'string',
-			'validator-factory-callback' => function() {
+			'validator-factory-callback' => function () {
 				// load validator builders
 				$factory = WikibaseRepo::getDefaultValidatorBuilders();
 
@@ -34,14 +35,15 @@ class MathWikidataHook {
 				$validators[] = new MathValidator();
 				return $validators;
 			},
-			'parser-factory-callback' => function( ParserOptions $options ) {
+			'parser-factory-callback' => function ( ParserOptions $options ) {
 				$repo = WikibaseRepo::getDefaultInstance();
 				$normalizer = new WikibaseStringValueNormalizer( $repo->getStringNormalizer() );
 				return new StringParser( $normalizer );
 			},
-			'formatter-factory-callback' => function( $format, FormatterOptions $options ) {
+			'formatter-factory-callback' => function ( $format, FormatterOptions $options ) {
 				global $wgOut;
 				$wgOut->addModuleStyles( [ 'ext.math.styles' ] );
+				$wgOut->addModules( [ 'ext.math.scripts' ] );
 				return new MathFormatter( $format );
 			},
 			'rdf-builder-factory-callback' => function (
@@ -56,8 +58,9 @@ class MathWikidataHook {
 		];
 	}
 
-	/*
+	/**
 	 * Add Datatype "Math" to the Wikibase Client
+	 * @param array &$dataTypeDefinitions
 	 */
 	public static function onWikibaseClientDataTypes( array &$dataTypeDefinitions ) {
 		global $wgMathEnableWikibaseDataType;
@@ -68,10 +71,10 @@ class MathWikidataHook {
 
 		$dataTypeDefinitions['PT:math'] = [
 			'value-type'                 => 'string',
-			'formatter-factory-callback' => function( $format, FormatterOptions $options ) {
+			'formatter-factory-callback' => function ( $format, FormatterOptions $options ) {
 				global $wgOut;
-				$styles = [ 'ext.math.scripts', 'ext.math.styles' ];
-				$wgOut->addModuleStyles( $styles );
+				$wgOut->addModuleStyles( [ 'ext.math.styles' ] );
+				$wgOut->addModules( [ 'ext.math.scripts' ] );
 				return new MathFormatter( $format );
 			},
 		];

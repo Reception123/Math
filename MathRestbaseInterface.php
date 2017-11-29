@@ -18,11 +18,10 @@ class MathRestbaseInterface {
 	private $error;
 	private $mathoidStyle;
 	private $mml;
-	/** @var boolean is there a request to purge the existing mathematical content */
+	/** @var bool is there a request to purge the existing mathematical content */
 	private $purge = false;
 
 	/**
-	 * MathRestbaseInterface constructor.
 	 * @param string $tex
 	 * @param string $type
 	 */
@@ -34,10 +33,10 @@ class MathRestbaseInterface {
 	/**
 	 * Bundles several requests for fetching MathML.
 	 * Does not send requests, if the the input TeX is invalid.
-	 * @param $rbis
-	 * @param $serviceClient
+	 * @param MathRestbaseInterface[] $rbis
+	 * @param VirtualRESTServiceClient $serviceClient
 	 */
-	private static function batchGetMathML( $rbis, $serviceClient ) {
+	private static function batchGetMathML( array $rbis, VirtualRESTServiceClient $serviceClient ) {
 		$requests = [];
 		$skips = [];
 		$i = 0;
@@ -85,7 +84,7 @@ class MathRestbaseInterface {
 	 * @throws MWException
 	 */
 	public function getMathML() {
-		if ( !$this->mml ){
+		if ( !$this->mml ) {
 			$this->mml = $this->getContent( 'mml' );
 		}
 		return $this->mml;
@@ -123,7 +122,7 @@ class MathRestbaseInterface {
 	private function executeRestbaseCheckRequest( $request ) {
 		$res = null;
 		$serviceClient = $this->getServiceClient();
-		$response =  $serviceClient->run( $request );
+		$response = $serviceClient->run( $request );
 		if ( $response['code'] !== 200 ) {
 			$this->log()->info( 'Tex check failed:', [
 					'post'  => $request['body'],
@@ -132,13 +131,12 @@ class MathRestbaseInterface {
 			] );
 		}
 		return $response;
-
 	}
 
 	/**
-	 * @param array $rbis array of MathRestbaseInterface instances
+	 * @param MathRestbaseInterface[] $rbis
 	 */
-	public static function batchEvaluate( $rbis ) {
+	public static function batchEvaluate( array $rbis ) {
 		if ( count( $rbis ) == 0 ) {
 			return;
 		}
@@ -163,6 +161,9 @@ class MathRestbaseInterface {
 		self::batchGetMathML( $rbis, $serviceClient );
 	}
 
+	/**
+	 * @return VirtualRESTServiceClient
+	 */
 	private function getServiceClient() {
 		global $wgVirtualRestConfig, $wgMathConcurrentReqs;
 		$http = new MultiHttpClient( [ 'maxConnsPerHost' => $wgMathConcurrentReqs ] );
@@ -259,24 +260,27 @@ class MathRestbaseInterface {
 		// Generates a TeX string that probably has not been generated before
 		$uniqueTeX = uniqid( 't=', true );
 		$testInterface = new MathRestbaseInterface( $uniqueTeX );
-		if ( ! $testInterface->checkTeX() ){
+		if ( ! $testInterface->checkTeX() ) {
 			$this->log()->warning( 'Config check failed, since test expression was considered as invalid.',
 				[ 'uniqueTeX' => $uniqueTeX ] );
 			return false;
 		}
+
 		try {
 			$url = $testInterface->getFullSvgUrl();
 			$req = MWHttpRequest::factory( $url );
 			$status = $req->execute();
-			if ( $status->isOK() ){
+			if ( $status->isOK() ) {
 				return true;
 			}
+
 			$this->log()->warning( 'Config check failed, due to an invalid response code.',
 				[ 'responseCode' => $status ] );
 		} catch ( Exception $e ) {
 			$this->log()->warning( 'Config check failed, due to an exception.', [ $e ] );
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -297,7 +301,7 @@ class MathRestbaseInterface {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getSuccess() {
 		if ( $this->success === null ) {
@@ -355,7 +359,7 @@ class MathRestbaseInterface {
 	}
 
 	/**
-	 * @param $response
+	 * @param array $response
 	 * @return bool
 	 */
 	public function evaluateRestbaseCheckResponse( $response ) {
@@ -432,15 +436,15 @@ class MathRestbaseInterface {
 	}
 
 	/**
-	 * @param $type
-	 * @param $body
+	 * @param string $type
+	 * @param string $body
 	 * @throws MWException
 	 */
 	public static function throwContentError( $type, $body ) {
 		$detail = 'Server problem.';
 		$json = json_decode( $body );
 		if ( isset( $json->detail ) ) {
-			if ( is_array( $json->detail ) ){
+			if ( is_array( $json->detail ) ) {
 				$detail = $json->detail[0];
 			} elseif ( is_string( $json->detail ) ) {
 				$detail = $json->detail;

@@ -25,7 +25,7 @@ class MathInputCheckTexvc extends MathInputCheck {
 		$errDetails = htmlspecialchars( substr( $texvcResult, 1 ) );
 
 		if ( $errorRenderer === false ) {
-			$errorRenderer =  new MathSource( $this->inputTeX );
+			$errorRenderer = new MathSource( $this->inputTeX );
 		}
 
 		switch ( $texvcStatus ) {
@@ -46,12 +46,12 @@ class MathInputCheckTexvc extends MathInputCheck {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid() {
 		$us = $this;
 		$checkWork = new PoolCounterWorkViaCallback( 'MathTexvc-check', "", [
-			'doWork' => function() use ( $us ) {
+			'doWork' => function () use ( $us ) {
 				return $us->doValidCheck();
 			}
 		] );
@@ -59,11 +59,11 @@ class MathInputCheckTexvc extends MathInputCheck {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doValidCheck() {
 		global $wgMathTexvcCheckExecutable;
-		if ( $wgMathTexvcCheckExecutable === false ){
+		if ( $wgMathTexvcCheckExecutable === false ) {
 			$texvcCheckExecutable = __DIR__ . '/texvccheck/texvccheck';
 		} else {
 			$texvcCheckExecutable = $wgMathTexvcCheckExecutable;

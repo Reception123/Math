@@ -55,34 +55,34 @@ ve.ui.MWLatexDialog.static.setSymbols = function ( symbols ) {
  */
 ve.ui.MWLatexDialog.prototype.initialize = function () {
 	var formulaPanel, inputField, displayField, idField, category,
-		formulaCard, optionsCard,
+		formulaTabPanel, optionsTabPanel,
 		dialog = this;
 
 	// Parent method
 	ve.ui.MWLatexDialog.super.prototype.initialize.call( this );
 
-	// Layout for the formula inserter (formula card) and options form (options card)
+	// Layout for the formula inserter (formula tab panel) and options form (options tab panel)
 	this.indexLayout = new OO.ui.IndexLayout( {
 		scrollable: false,
 		expanded: true
 	} );
 
-	formulaCard = new OO.ui.CardLayout( 'formula', {
+	formulaTabPanel = new OO.ui.TabPanelLayout( 'formula', {
 		label: ve.msg( 'math-visualeditor-mwlatexdialog-card-formula' ),
 		expandable: false,
 		scrollable: false,
 		padded: true
 	} );
-	optionsCard = new OO.ui.CardLayout( 'options', {
+	optionsTabPanel = new OO.ui.TabPanelLayout( 'options', {
 		label: ve.msg( 'math-visualeditor-mwlatexdialog-card-options' ),
 		expandable: false,
 		scrollable: false,
 		padded: true
 	} );
 
-	this.indexLayout.addCards( [
-		formulaCard,
-		optionsCard
+	this.indexLayout.addTabPanels( [
+		formulaTabPanel,
+		optionsTabPanel
 	] );
 
 	// Layout for symbol picker (menu) and input and preview (content)
@@ -96,7 +96,6 @@ ve.ui.MWLatexDialog.prototype.initialize = function () {
 	);
 
 	this.input = new ve.ui.MWAceEditorWidget( {
-		multiline: true,
 		rows: 1, // This will be recalculated later in onWindowManagerResize
 		autocomplete: 'live',
 		autocompleteWordList: this.constructor.static.autocompleteWordList
@@ -180,10 +179,10 @@ ve.ui.MWLatexDialog.prototype.initialize = function () {
 			)
 		);
 
-		formulaCard.$element.append(
+		formulaTabPanel.$element.append(
 			dialog.menuLayout.$element
 		);
-		optionsCard.$element.append(
+		optionsTabPanel.$element.append(
 			displayField.$element,
 			idField.$element
 		);

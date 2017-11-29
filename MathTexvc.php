@@ -354,6 +354,7 @@ class MathTexvc extends MathRenderer {
 
 	/**
 	 * Overrides base class.  Writes to database, and if configured, squid.
+	 * @return bool
 	 */
 	public function writeCache() {
 		global $wgUseSquid;
@@ -372,7 +373,7 @@ class MathTexvc extends MathRenderer {
 	/**
 	 * Reads the rendering information from the database.  If configured, checks whether files exist
 	 *
-	 * @return boolean true if retrieved, false otherwise
+	 * @return bool true if retrieved, false otherwise
 	 */
 	public function readCache() {
 		global $wgMathCheckFiles;

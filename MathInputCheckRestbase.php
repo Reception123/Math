@@ -17,7 +17,7 @@ class MathInputCheckRestbase extends MathInputCheck {
 	 * (performs no checking)
 	 * @param string $tex the TeX input string to be checked
 	 * @param string $type
-	 * @param MathRestbaseInterface $ref
+	 * @param MathRestbaseInterface &$ref
 	 */
 	public function __construct( $tex = '', $type = 'tex', &$ref = null ) {
 		parent::__construct( $tex );
@@ -37,9 +37,9 @@ class MathInputCheckRestbase extends MathInputCheck {
 	 */
 	public function errorObjectToHtml( stdClass $e, $errorRenderer = null ) {
 		if ( $errorRenderer === null ) {
-			$errorRenderer =  new MathSource( $this->inputTeX );
+			$errorRenderer = new MathSource( $this->inputTeX );
 		}
-		if ( isset( $e->error->message ) ){
+		if ( isset( $e->error->message ) ) {
 			if ( $e->error->message === 'Illegal TeX function' ) {
 				return $errorRenderer->getError( 'math_unknown_function', $e->error->found );
 			} elseif ( preg_match( '/Math extension/', $e->error->message ) ) {
@@ -59,7 +59,7 @@ class MathInputCheckRestbase extends MathInputCheck {
 		return $errorRenderer->getError( 'math_unknown_error' );
 	}
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid() {
 		return $this->restbaseInterface->getSuccess();
@@ -81,7 +81,7 @@ class MathInputCheckRestbase extends MathInputCheck {
 	 */
 	public function getError() {
 		$err = $this->restbaseInterface->getError();
-		if ( $err === null ){
+		if ( $err === null ) {
 			return null;
 		}
 		return $this->errorObjectToHtml( $err );

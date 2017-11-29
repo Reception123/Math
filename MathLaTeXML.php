@@ -92,7 +92,7 @@ class MathLaTeXML extends MathMathML {
 
 	/**
 	 * Does the actual web request to convert TeX to MathML.
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function doRender() {
 		if ( trim( $this->getTex() ) === '' ) {
@@ -106,7 +106,7 @@ class MathLaTeXML extends MathMathML {
 		$post = $this->getLaTeXMLPostData();
 		// There is an API-inconsistency between different versions of the LaTeXML daemon
 		// some versions require the literal prefix other don't allow it.
-		if ( ! strpos( $host, '/convert' ) ){
+		if ( ! strpos( $host, '/convert' ) ) {
 			$post = preg_replace( '/&tex=/', '&tex=literal:', $post, 1 );
 		}
 		$this->lastError = '';
@@ -151,8 +151,7 @@ class MathLaTeXML extends MathMathML {
 
 	/**
 	 * Internal version of @link self::embedMathML
-	 * @return string
-	 * @return html element with rendered math
+	 * @return string html element with rendered math
 	 */
 	protected function getMathMLTag() {
 		return self::embedMathML( $this->getMathml(), urldecode( $this->getTex() ) );
@@ -180,7 +179,7 @@ class MathLaTeXML extends MathMathML {
 	/**
 	 * Calculates the SVG image based on the MathML input
 	 * No cache is used.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function calculateSvg() {
 		$renderer = new MathMathML( $this->getTex() );
@@ -218,4 +217,3 @@ class MathLaTeXML extends MathMathML {
 		return 'mathlatexml';
 	}
 }
-

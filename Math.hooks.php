@@ -9,7 +9,12 @@
 use MediaWiki\Logger\LoggerFactory;
 
 class MathHooks {
+
+	/**
+	 * @var array[]
+	 */
 	private static $tags = [];
+
 	const MATHCACHEKEY = 'math=';
 
 	public static function mathConstantToString( $value, array $defs, $prefix, $default ) {
@@ -76,7 +81,7 @@ class MathHooks {
 			'MW_MATH_PNG'    => 0,
 			'MW_MATH_SOURCE' => 3,
 			'MW_MATH_MATHML' => 5,
-			'MW_MATH_LATEXML'=> 7 ];
+			'MW_MATH_LATEXML' => 7 ];
 
 		return self::mathConstantToString( $mode, $defs, $prefix = 'MW_MATH_', $default );
 	}
@@ -86,7 +91,7 @@ class MathHooks {
 			'png'    => 0,
 			'source' => 3,
 			'mathml' => 5,
-			'latexml'=> 7 ];
+			'latexml' => 7 ];
 
 		if ( array_key_exists( $mode, $defs ) ) {
 			return $defs[$mode];
@@ -95,12 +100,13 @@ class MathHooks {
 		}
 	}
 
-	/*
+	/**
 	 * Generate a user dependent hash cache key.
 	 * The hash key depends on the rendering mode.
-	 * @param &$confstr The to-be-hashed key string that is being constructed
+	 * @param string &$confstr The to-be-hashed key string that is being constructed
 	 * @param User $user reference to the current user
 	 * @param array &$forOptions userOptions used on that page
+	 * @return true
 	 */
 	public static function onPageRenderingHash( &$confstr, $user = false, &$forOptions = [] ) {
 		global $wgUser;
@@ -161,8 +167,8 @@ class MathHooks {
 	/**
 	 * Register the <math> tag with the Parser.
 	 *
-	 * @param $parser Parser instance of Parser
-	 * @return Boolean: true
+	 * @param Parser $parser instance of Parser
+	 * @return bool true
 	 */
 	static function onParserFirstCallInit( $parser ) {
 		$parser->setHook( 'math', [ 'MathHooks', 'mathTagHook' ] );
@@ -176,8 +182,8 @@ class MathHooks {
 	/**
 	 * Callback function for the <math> parser hook.
 	 *
-	 * @param $content (the LaTeX input)
-	 * @param $attributes
+	 * @param string $content (the LaTeX input)
+	 * @param array $attributes
 	 * @param Parser $parser
 	 * @return array
 	 */
@@ -229,7 +235,11 @@ class MathHooks {
 		} else {
 			LoggerFactory::getInstance( 'Math' )->warning(
 				"Rendering failed. Printing error message." );
-			$parser->addTrackingCategory( 'math-tracking-category-error' );
+			// Set a short parser cache time (10 minutes) after encountering
+			// render issues, but not syntax issues.
+			$parser->getOutput()->updateCacheExpiry( 600 );
+			// Add a tracking category specialized on render errors.
+			$parser->addTrackingCategory( 'math-tracking-category-render-error' );
 			return $renderer->getLastError();
 		}
 		Hooks::run( 'MathFormulaPostRender',
@@ -244,9 +254,9 @@ class MathHooks {
 	/**
 	 * Add the new math rendering options to Special:Preferences.
 	 *
-	 * @param $user Object: current User object
-	 * @param $defaultPreferences Object: Preferences object
-	 * @return Boolean: true
+	 * @param User $user current User object
+	 * @param array &$defaultPreferences Preferences array
+	 * @return bool true
 	 */
 	static function onGetPreferences( $user, &$defaultPreferences ) {
 		global $wgDefaultUserOptions;
@@ -258,7 +268,7 @@ class MathHooks {
 		];
 		// If the default option is not in the valid options the
 		// user interface throws an exception (BUG 64844)
-		$mode = MathHooks::mathModeToString( $wgDefaultUserOptions['math'] );
+		$mode = self::mathModeToString( $wgDefaultUserOptions['math'] );
 		if ( ! in_array( $mode, MathRenderer::getValidModes() ) ) {
 			LoggerFactory::getInstance( 'Math' )->error( 'Misconfiguration: '.
 				"\$wgDefaultUserOptions['math'] is not in " . MathRenderer::getValidModes() . ".\n".
@@ -288,7 +298,7 @@ class MathHooks {
 	 * MaintenanceRefreshLinksInit handler; optimize settings for refreshLinks batch job.
 	 *
 	 * @param Maintenance $maint
-	 * @return boolean hook return code
+	 * @return bool hook return code
 	 */
 	static function onMaintenanceRefreshLinksInit( $maint ) {
 		global $wgUser;
@@ -302,12 +312,11 @@ class MathHooks {
 	/**
 	 * LoadExtensionSchemaUpdates handler; set up math table on install/upgrade.
 	 *
-	 * @param $updater DatabaseUpdater
+	 * @param DatabaseUpdater $updater
 	 * @throws Exception
 	 * @return bool
 	 */
 	static function onLoadExtensionSchemaUpdates( $updater = null ) {
-
 		if ( is_null( $updater ) ) {
 			throw new Exception( 'Math extension is only necessary in 1.18 or above' );
 		}
@@ -349,7 +358,7 @@ class MathHooks {
 	 * Add 'math' and 'mathlatexml' tables to the list of tables that need to be copied to
 	 * temporary tables for parser tests to run.
 	 *
-	 * @param array $tables
+	 * @param array &$tables
 	 * @return bool
 	 */
 	static function onParserTestTables( &$tables ) {
@@ -359,13 +368,13 @@ class MathHooks {
 	}
 
 	/**
-	 * @param Parser $parser
-	 * @param $text
+	 * @param Parser &$parser
+	 * @param string &$text
 	 * @return bool
 	 */
 	public static function onParserAfterTidy( &$parser, &$text ) {
 		$rbis = [];
-		foreach ( self::$tags as $key => $tag ){
+		foreach ( self::$tags as $key => $tag ) {
 			/** @var MathRenderer $renderer */
 			$renderer = $tag[0];
 			$rbi = new MathRestbaseInterface( $renderer->getTex(), $renderer->getInputType() );
@@ -373,7 +382,7 @@ class MathHooks {
 			$rbis[] = $rbi;
 		}
 		MathRestbaseInterface::batchEvaluate( $rbis );
-		foreach ( self::$tags as $key => $tag ){
+		foreach ( self::$tags as $key => $tag ) {
 			$value = call_user_func_array( [ "MathHooks","mathPostTagHook" ], $tag );
 			// Workaround for https://phabricator.wikimedia.org/T103269
 			$text = preg_replace( '/(<mw:editsection[^>]*>.*?)' . preg_quote( $key ) .
@@ -385,10 +394,9 @@ class MathHooks {
 		self::$tags = [];
 		return true;
 	}
+
 	/**
-	 *
-	 * @global type $wgOut
-	 * @param type $toolbar
+	 * @param string &$toolbar HTML
 	 */
 	static function onEditPageBeforeEditToolbar( &$toolbar ) {
 		global $wgOut;
@@ -408,14 +416,14 @@ class MathHooks {
 	/**
 	 * Callback function for the <ce> parser hook.
 	 *
-	 * @param $content (the LaTeX input)
-	 * @param $attributes
+	 * @param string $content (the LaTeX input)
+	 * @param array $attributes
 	 * @param Parser $parser
 	 * @return array
 	 */
 	static function chemTagHook( $content, $attributes, $parser ) {
 		$attributes['chem'] = true;
-		return MathHooks::mathTagHook( '\ce{' . $content . '}', $attributes, $parser );
+		return self::mathTagHook( '\ce{' . $content . '}', $attributes, $parser );
 	}
 
 }

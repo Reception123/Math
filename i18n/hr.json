@@ -4,7 +4,8 @@
 			"Herr Mlinka",
 			"MaGa",
 			"Roberta F.",
-			"SpeedyGonsales"
+			"SpeedyGonsales",
+			"Bugoslav"
 		]
 	},
 	"math-visualeditor-mwchemdialog-title": "Kemijska formula",
@@ -18,6 +19,20 @@
 	"math-visualeditor-mwlatexinspector-display-inline": "U redu",
 	"math-visualeditor-mwlatexinspector-id": "ID poveznice (neobvezno)",
 	"math-visualeditor-mwmathdialog-title": "Matematička formula",
+	"math-visualeditor-symbol-group-chem-addition": "Adukti",
+	"math-visualeditor-symbol-group-chem-aggregation": "Agregatna stanja",
+	"math-visualeditor-symbol-group-chem-arrows": "Reakcijske strjelice",
+	"math-visualeditor-symbol-group-chem-brackets": "Oble, uglate i vitičaste zagrade",
+	"math-visualeditor-symbol-group-chem-charges": "Električki naboji",
+	"math-visualeditor-symbol-group-chem-dots": "Nespareni elektroni i radikalne točke",
+	"math-visualeditor-symbol-group-chem-equations": "Kemijske jednadžbe",
+	"math-visualeditor-symbol-group-chem-formulae": "Kemijske formule",
+	"math-visualeditor-symbol-group-chem-greek": "Grčki znakovi",
+	"math-visualeditor-symbol-group-chem-isotopes": "Izotopi",
+	"math-visualeditor-symbol-group-chem-operators": "Znakovi jednakosti",
+	"math-visualeditor-symbol-group-chem-oxidation": "Oksidacijski broj",
+	"math-visualeditor-symbol-group-chem-precipitate": "Talog i plin",
+	"math-visualeditor-symbol-group-chem-stoichiometric": "Stehiometrijski brojevi",
 	"math-visualeditor-symbol-group-math-accents": "Naglasci i dijakritici",
 	"math-visualeditor-symbol-group-math-arrows": "Strijelice",
 	"math-visualeditor-symbol-group-math-derivatives": "Diferencijali i derivacije",
@@ -53,9 +68,9 @@
 	"math-tracking-category-error-desc": "Stranice u ovoj kategoriji imaju pogrješke u uporabi matematičkih oznaka.",
 	"math_unknown_error": "nepoznata pogrješka",
 	"math_unknown_function": "nepoznata funkcija",
-	"mw_math_mathjax": "MathJax (pokusno)",
 	"mw_math_mathml": "Ako je moguće MathML (u pokusnoj fazi)",
 	"mw_math_png": "PNG slike",
 	"mw_math_source": "Ostavi u formatu TeX (za tekstualne preglednike)",
-	"prefs-math": "Prikaz matematičkih formula"
+	"prefs-math": "Prikaz matematičkih formula",
+	"mathstatus": "Stanje izvedbe ispisa matematičkih formula"
 }

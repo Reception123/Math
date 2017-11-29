@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bunukwiki",
+			"Tokoabibi",
+			"Benel"
+		]
+	},
+	"math-visualeditor-mwchemdialog-title": "huasiese",
+	"math-visualeditor-mwlatexdialog-card-formula": "tatudungay a sausi",
+	"math-visualeditor-mwlatexdialog-card-options": "mapili’ay",
+	"math-visualeditor-mwlatexinspector-display": "paazih",
+	"math-visualeditor-mwlatexinspector-display-block": "milangat",
+	"math-visualeditor-mwlatexinspector-display-default": "sulul",
+	"math-visualeditor-mwlatexinspector-display-inline": "ilabu nu tusil",
+	"math-visualeditor-mwmathdialog-title": "sapisausi a tatudungay",
+	"math-visualeditor-symbol-group-chem-formulae": "huasiese",
+	"math-visualeditor-symbol-group-chem-greek": "sulit-bacu nu Sila",
+	"math-visualeditor-symbol-group-chem-precipitate": "celem atu bali",
+	"math-visualeditor-symbol-group-math-logic": "loci",
+	"math_failure": "patingalaw mungangaw",
+	"math_lexing_error": "sakamuan mungangaw",
+	"math_sample": "papaheceken tatudungay a sausi itini",
+	"math_syntax_error": "sakilul nu kamu mungangaw",
+	"math_unknown_error": "caay kapulita ku mungangaw",
+	"math_unknown_function": "caykapulita a hansu-sausi \"$1\"",
+	"mw_math_png": "PNG zunga’",
+	"prefs-math": "sapisausi a tatudungay"
+}
